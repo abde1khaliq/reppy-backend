@@ -18,6 +18,7 @@ urlpatterns = [
     path(r'reppy_api/v1/', include(router.urls)),
     path(r'auth/jwt/create/', CustomTokenObtainPairView.as_view(), name='jwt-create'),
     path(r'auth/jwt/refresh/', CookieTokenRefreshView.as_view(), name='jwt-refresh'),
+    path("", include("workout.urls")),
 ]
 
 if settings.DEBUG:
