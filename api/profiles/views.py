@@ -12,7 +12,7 @@ class ProfilesViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_serializer_context(self):
-        return {'request_user': self.request.user}
+        return {'user_instance': self.request.user}
 
     @action(detail=False, methods=['GET'])
     def me(self, request):
