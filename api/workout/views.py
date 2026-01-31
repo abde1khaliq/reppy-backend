@@ -1,7 +1,8 @@
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, status
 from rest_framework.permissions import IsAuthenticated
 from .models import Workout, WorkoutHistory, WorkoutExercise, Exercise
 from .serializers import WorkoutSerializer, WorkoutHistorySerializer, ListWorkoutExerciseSerializer, CreateWorkoutExerciseSerializer, ExerciseSerializer
+from rest_framework.response import Response
 
 
 class WorkoutViewSet(viewsets.ModelViewSet):
@@ -36,6 +37,15 @@ class WorkoutExerciseViewSet(viewsets.ModelViewSet):
 
     def get_serializer_context(self):
         return {'workout_instance': self.kwargs['workout_pk']}
+
+    def create(self, request, *args, **kwargs):
+        if isinstance(request.data, list):
+            serializer = self.get_serializer(data=request.data, many=True)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return super().create(request, *args, **kwargs)
 
 
 class ExerciseViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):

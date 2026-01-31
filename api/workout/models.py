@@ -14,17 +14,7 @@ class Workout(models.Model):
         return f"{self.title} - {self.user.username}"
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.name
-
-
 class Exercise(models.Model):
-    category = models.ForeignKey(
-        Category, related_name="exercises", on_delete=models.PROTECT
-    )
     name = models.CharField(max_length=100)
 
     def __str__(self):
