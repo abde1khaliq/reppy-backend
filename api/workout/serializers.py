@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Workout, WorkoutHistory, WorkoutExercise, Exercise
+from .models import Workout, WorkoutHistory, WorkoutExercise, Exercise, Category
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']
 
 
 class WorkoutSerializer(serializers.ModelSerializer):
@@ -21,6 +27,8 @@ class WorkoutHistorySerializer(serializers.ModelSerializer):
 
 
 class ExerciseSerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+
     class Meta:
         model = Exercise
         fields = ['id', 'category', 'name']

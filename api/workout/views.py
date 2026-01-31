@@ -1,7 +1,7 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.permissions import IsAuthenticated
-from .models import Workout, WorkoutHistory, WorkoutExercise
-from .serializers import WorkoutSerializer, WorkoutHistorySerializer, ListWorkoutExerciseSerializer, CreateWorkoutExerciseSerializer
+from .models import Workout, WorkoutHistory, WorkoutExercise, Exercise
+from .serializers import WorkoutSerializer, WorkoutHistorySerializer, ListWorkoutExerciseSerializer, CreateWorkoutExerciseSerializer, ExerciseSerializer
 
 
 class WorkoutViewSet(viewsets.ModelViewSet):
@@ -17,8 +17,10 @@ class WorkoutViewSet(viewsets.ModelViewSet):
 
 class WorkoutHistoryViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
-    queryset = WorkoutHistory.objects.all()
     serializer_class = WorkoutHistorySerializer
+
+    def get_queryset(self):
+        return WorkoutHistory.objects.filter(user=self.request.user)
 
 
 class WorkoutExerciseViewSet(viewsets.ModelViewSet):
@@ -34,3 +36,9 @@ class WorkoutExerciseViewSet(viewsets.ModelViewSet):
 
     def get_serializer_context(self):
         return {'workout_instance': self.kwargs['workout_pk']}
+
+
+class ExerciseViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer

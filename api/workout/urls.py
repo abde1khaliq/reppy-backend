@@ -1,10 +1,11 @@
 from rest_framework_nested import routers
-from .views import WorkoutViewSet, WorkoutHistoryViewSet, WorkoutExerciseViewSet
+from .views import WorkoutViewSet, WorkoutHistoryViewSet, WorkoutExerciseViewSet, ExerciseViewSet
 
 app_name = 'workouts'
 
 router = routers.DefaultRouter()
 router.register(r'workouts', WorkoutViewSet, basename='workouts')
+router.register(r'exercises', ExerciseViewSet, basename='exercises')
 
 workout_exercises = routers.NestedDefaultRouter(
     router, r'workouts', lookup='workout')
