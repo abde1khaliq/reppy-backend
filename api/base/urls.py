@@ -2,8 +2,6 @@ from django.urls import path, include
 from django.contrib import admin
 from django.conf import settings
 import debug_toolbar
-from workout.views import WorkoutViewSet
-from profiles.views import ProfilesViewSet
 from .access_jwt import CustomTokenObtainPairView
 from .refresh_jwt import CookieTokenRefreshView
 
@@ -16,6 +14,7 @@ urlpatterns = [
     path(r'auth/jwt/refresh/', CookieTokenRefreshView.as_view(), name='jwt-refresh'),
     # Apps Url endpoints
     path(f'{API_PREFIX}/', include("workout.urls")),
+    path(f'{API_PREFIX}/', include("profiles.urls")),
 ]
 
 if settings.DEBUG:
