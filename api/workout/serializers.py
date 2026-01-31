@@ -1,31 +1,20 @@
 from rest_framework import serializers
-from .models import Workout, WorkoutExercise, WorkoutHistory
+from .models import Workout, WorkoutHistory
 
 
 class WorkoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workout
-        fields = ['title']
+        fields = ["id", "user", "title", "created_at"]
+        read_only_fields = ["user"]
 
-
-class WorkoutExerciseSerializer(serializers.ModelSerializer):
-    exercise_name = serializers.CharField(
-        source="exercise.name", read_only=True)
-
-    class Meta:
-        model = WorkoutExercise
-        fields = ["exercise_name", "sets", "reps"]
-
-
-class WorkoutSerializer(serializers.ModelSerializer):
-    workout_exercises = WorkoutExerciseSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Workout
-        fields = ["id", "title", "created_at", "workout_exercises"]
+    def create(self, validated_data):
+        user = self.context.get('user_instance')
+        validated_data['user'] = user
+        return super().create(validated_data)
 
 
 class WorkoutHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkoutHistory
-        fields = ["id", "performed_at"]
+        fields = ["id", "workout", "performed_at"]

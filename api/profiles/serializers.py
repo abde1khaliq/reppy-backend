@@ -9,6 +9,6 @@ class ProfilesSerializer(serializers.ModelSerializer):
                   'birthday', 'gender']
 
     def create(self, validated_data):
-        user = self.context.get('request_user')
+        user = self.context.get('user_instance')
         validated_data['user'] = user
         return super().create(validated_data)
