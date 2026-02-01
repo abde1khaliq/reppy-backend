@@ -3,13 +3,17 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from .models import UserProfile
-from .serializers import ProfilesSerializer
+from .serializers import CreateProfileSerializer, ListProfileSerializer
 
 
 class ProfilesViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
-    serializer_class = ProfilesSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CreateProfileSerializer
+        return ListProfileSerializer
 
     def get_serializer_context(self):
         return {'user_instance': self.request.user}

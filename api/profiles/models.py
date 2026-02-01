@@ -16,14 +16,11 @@ class UserProfile(models.Model):
     profile_picture = models.URLField(null=True, blank=True)
     bio = models.CharField(max_length=255, null=True, blank=True)
     birthday = models.CharField(null=True, blank=True)
-    status = models.CharField(max_length=255, null=True, blank=True)
     gender = models.CharField(
         choices=GENDERS,
         default='CYO',
         max_length=30
     )
-    gender = models.CharField(
-        choices=GENDERS, max_length=30, null=True, blank=True)
     status_message = models.CharField(max_length=100, null=True, blank=True)
     current_streak = models.PositiveIntegerField(default=0)
 
