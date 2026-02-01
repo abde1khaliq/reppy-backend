@@ -22,7 +22,10 @@ class UserProfile(models.Model):
         default='CYO',
         max_length=30
     )
+    gender = models.CharField(
+        choices=GENDERS, max_length=30, null=True, blank=True)
+    status_message = models.CharField(max_length=100, null=True, blank=True)
+    current_streak = models.PositiveIntegerField(default=0)
 
-
-def __str__(self):
-    return self.nickname or self.user.username
+    def __str__(self):
+        return self.nickname or self.user.username
